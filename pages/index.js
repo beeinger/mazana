@@ -1,16 +1,50 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Parallax } from "react-spring/renderprops-addons";
 import useHorizontalScroll from "context/useHorizontalScroll";
 import Section from "components/Section";
-import Home from "sections/Home";
+import Default from "sections/Default";
 
 const sections = [
-  { speed: 0.25, section: Home, length: 2 },
-  { speed: 0.25, section: Home, length: 2, backgroundColor: "#eec4c9" },
-  { speed: 0.25, section: Home, length: 2, backgroundColor: "grey" },
-  { speed: 0.25, section: Home, length: 2, backgroundColor: "skyblue" },
-  { speed: 0.25, section: Home, length: 2, backgroundColor: "white" },
-  { speed: 0.25, section: Home, length: 2, backgroundColor: "gold" },
+  {
+    section: Default,
+    title: "Home",
+    photos: [
+      "1.png",
+      "2.jpg",
+      "3.jpg",
+      "4.JPG",
+      "5.JPG",
+      "6.JPG",
+      "1.png",
+      "2.jpg",
+      "1.png",
+      "2.jpg",
+      "1.png",
+      "2.jpg",
+      "1.png",
+      "2.jpg",
+    ],
+  },
+  {
+    section: Default,
+    title: "Home",
+    backgroundColor: "#eec4c9",
+    photos: ["1.png", "2.jpg"],
+  },
+  {
+    section: Default,
+    title: "Home",
+    length: 3,
+    photos: ["1.png", "2.jpg"],
+    backgroundColor: "grey",
+  },
+  {
+    section: Default,
+    title: "Home",
+    length: 3,
+    photos: ["1.png", "2.jpg"],
+    backgroundColor: "skyblue",
+  },
 ];
 
 export default function index() {

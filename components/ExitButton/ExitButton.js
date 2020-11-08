@@ -2,33 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import PropTypes from "prop-types";
 
-const config = { mass: 2, tension: 375, friction: 20 };
-const states = {
-  still: [
-    { x: 4, y: 4, height: 40, config: config },
-    { x: 4, y: 48, height: 20, config: config },
-    { x: 28, y: 4, height: 20, config: config },
-    { x: 28, y: 28, height: 40, config: config },
-    { x: 52, y: 4, height: 40, config: config },
-    { x: 52, y: 48, height: 20, config: config },
-  ],
-  hover: [
-    { x: 2, y: 2, height: 40, config: config },
-    { x: 2, y: 50, height: 20, config: config },
-    { x: 29, y: 2, height: 20, config: config },
-    { x: 29, y: 30, height: 40, config: config },
-    { x: 56, y: 2, height: 40, config: config },
-    { x: 56, y: 50, height: 20, config: config },
-  ],
-  active: [
-    { x: 2, y: 2, height: 20, config: config },
-    { x: 2, y: 30, height: 40, config: config },
-    { x: 29, y: 2, height: 40, config: config },
-    { x: 29, y: 50, height: 20, config: config },
-    { x: 56, y: 2, height: 20, config: config },
-    { x: 56, y: 30, height: 40, config: config },
-  ],
-};
+const config = { mass: 1, tension: 110, friction: 20, velocity: 15 };
 
 function ExitButton({
   onClick,
@@ -37,30 +11,125 @@ function ExitButton({
   width,
   height,
   size,
-  strokeWidth,
+  strokeWidth = 2,
   style,
+  className,
 }) {
-  const [state, setState] = useState("still");
-  const [rect0, setRect0] = useSpring(() => states[state][0]);
-  const [rect1, setRect1] = useSpring(() => states[state][1]);
-  const [rect2, setRect2] = useSpring(() => states[state][2]);
-  const [rect3, setRect3] = useSpring(() => states[state][3]);
-  const [rect4, setRect4] = useSpring(() => states[state][4]);
-  const [rect5, setRect5] = useSpring(() => states[state][5]);
+  const states = {
+    init: [
+      {
+        from: {
+          d: "M47 75 L47 75 L47 75",
+          stroke: "rgba(0,0,0,0.5)",
+          strokeWidth,
+        },
+        to: [
+          { d: "M47 75 L25 50 L25 50", stroke: "rgba(0,0,0,0.5)", strokeWidth },
+          { d: "M47 75 L25 50 L47 25", stroke: "rgba(0,0,0,0.5)", strokeWidth },
+        ],
+        config,
+      },
+      { d: "M47 75 L47 75 L47 75", stroke: "black", strokeWidth, config },
+      {
+        d: "M47 75 L47 75 M47 25 L47 25",
+        stroke: "rgba(255, 255, 255, 0.9)",
+        strokeWidth: strokeWidth + 1,
+        config,
+      },
+    ],
+    still: [
+      {
+        d: "M47 75 L25 50 L47 25",
+        stroke: "rgba(0,0,0,0.5)",
+        strokeWidth,
+        config,
+      },
+      {
+        to: [
+          {
+            d: "M47 75 L25 50 L25 50",
+            stroke: "black",
+            strokeWidth: strokeWidth + 0.5,
+          },
+          { d: "M47 75 L47 75 L47 75", stroke: "black", strokeWidth },
+        ],
+        config,
+      },
+      {
+        d: "M47 75 L47 75 M47 25 L47 25",
+        stroke: "rgba(255, 255, 255, 0.9)",
+        strokeWidth: strokeWidth + 1,
+        config,
+      },
+    ],
+    hover: [
+      {
+        d: "M47 75 L25 50 L47 25",
+        stroke: "rgba(0,0,0,0.5)",
+        strokeWidth: strokeWidth + 1,
+        config,
+      },
+      {
+        to: [
+          {
+            d: "M47 75 L25 50 L25 50",
+            stroke: "black",
+            strokeWidth: strokeWidth + 0.5,
+          },
+          {
+            d: "M47 75 L25 50 L47 25",
+            stroke: "black",
+            strokeWidth: strokeWidth + 1,
+          },
+        ],
+        config,
+      },
+      {
+        d: "M47 75 L47 75 M47 25 L47 25",
+        stroke: "rgba(255, 255, 255, 0.9)",
+        strokeWidth: strokeWidth + 1,
+        config,
+      },
+    ],
+    active: [
+      {
+        d: "M47 75 L25 50 L47 25",
+        stroke: "rgba(0,0,0,0.5)",
+        strokeWidth,
+        config,
+      },
+      {
+        d: "M47 75 L25 50 L47 25",
+        stroke: "black",
+        strokeWidth: strokeWidth + 1,
+        config,
+      },
+      {
+        to: {
+          d: "M47 75 L25 50 M47 25 L25 50",
+          stroke: "rgba(255, 255, 255, 0.9)",
+          strokeWidth: strokeWidth + 1,
+        },
+        config,
+      },
+    ],
+  };
+  const [state, setState] = useState();
+  const [line0, setLine0] = useSpring(() => states.init[0]);
+  const [line1, setLine1] = useSpring(() => states.init[1]);
+  const [line2, setLine2] = useSpring(() => states.init[2]);
 
   useEffect(() => {
-    setRect0(states[state][0]);
-    setRect1(states[state][1]);
-    setRect2(states[state][2]);
-    setRect3(states[state][3]);
-    setRect4(states[state][4]);
-    setRect5(states[state][5]);
+    if (!state) return;
+    setLine0(states[state][0]);
+    setLine1(states[state][1]);
+    setLine2(states[state][2]);
   }, [state]);
 
   return (
     <animated.svg
-      width={width || height || size || "200"}
-      height={height || width || size || "200"}
+      width={width || height || size || "50"}
+      height={height || width || size || "50"}
       viewBox="0 0 100 100"
       fill={fill || "none"}
       strokeWidth={strokeWidth || "2"}
@@ -71,6 +140,7 @@ function ExitButton({
         },
         ...(style || {}),
       }}
+      className={className}
       onMouseEnter={() => state !== "active" && setState("hover")}
       onMouseLeave={() => setState("still")}
       onMouseDown={() => setState("active")}
@@ -79,7 +149,9 @@ function ExitButton({
       onTouchEnd={() => setState("hover")}
       onClick={onClick}
     >
-      <line x1="10" x2="50" y1="110" y2="150" />
+      <animated.path {...line0} />
+      <animated.path {...line1} />
+      <animated.path {...line2} />
     </animated.svg>
   );
 }
@@ -93,6 +165,7 @@ ExitButton.propTypes = {
   size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   strokeWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   style: PropTypes.object,
+  className: PropTypes.string,
 };
 
 export default ExitButton;
