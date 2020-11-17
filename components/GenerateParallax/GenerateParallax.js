@@ -1,7 +1,6 @@
 import React from "react";
 import { Parallax } from "react-spring/renderprops-addons";
-import useParallaxScrolling from "hooks/useParallaxScrolling";
-import useMenu from "hooks/useMenu";
+import { useMenu, useParallaxScrolling } from "hooks";
 import Section from "components/Section";
 import Menu from "components/Menu";
 
