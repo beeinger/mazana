@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import PropTypes from "prop-types";
+import Color from "color";
 
 const config = { mass: 1, tension: 110, friction: 20, velocity: 15 };
 
 function ExitButton({
   onClick,
   color,
-  fill,
+  backgroundColor,
   width,
   height,
   size,
@@ -15,100 +16,140 @@ function ExitButton({
   style,
   className,
 }) {
+  color = Color(color || "black");
+  backgroundColor = Color(backgroundColor || "white");
+
   const states = {
     init: [
       {
         from: {
           d: "M47 75 L47 75 L47 75",
-          stroke: "rgba(0,0,0,0.5)",
-          strokeWidth,
+          stroke: backgroundColor.isDark()
+            ? backgroundColor.negate().darken(0.5).rgb().string()
+            : backgroundColor.darken(0.5).rgb().string(),
+          strokeWidth: strokeWidth + 0.5,
         },
         to: [
-          { d: "M47 75 L25 50 L25 50", stroke: "rgba(0,0,0,0.5)", strokeWidth },
-          { d: "M47 75 L25 50 L47 25", stroke: "rgba(0,0,0,0.5)", strokeWidth },
+          {
+            d: "M47 75 L25 50 L25 50",
+            stroke: backgroundColor.isDark()
+              ? backgroundColor.negate().darken(0.5).rgb().string()
+              : backgroundColor.darken(0.5).rgb().string(),
+            strokeWidth: strokeWidth + 0.25,
+          },
+          {
+            d: "M47 75 L25 50 L47 25",
+            stroke: backgroundColor.isDark()
+              ? backgroundColor.negate().darken(0.5).rgb().string()
+              : backgroundColor.darken(0.5).rgb().string(),
+            strokeWidth: strokeWidth + 0.5,
+          },
         ],
         config,
       },
-      { d: "M47 75 L47 75 L47 75", stroke: "black", strokeWidth, config },
+      {
+        d: "M47 75 L47 75 L47 75",
+        stroke: color.rgb().string(),
+        strokeWidth,
+        config,
+      },
       {
         d: "M47 75 L47 75 M47 25 L47 25",
-        stroke: "rgba(255, 255, 255, 0.9)",
-        strokeWidth: strokeWidth + 1,
+        stroke: backgroundColor.isLight()
+          ? backgroundColor.lighten(0.1).rgb().string()
+          : backgroundColor.darken(0.25).rgb().string(),
+        strokeWidth: strokeWidth + 2,
         config,
       },
     ],
     still: [
       {
         d: "M47 75 L25 50 L47 25",
-        stroke: "rgba(0,0,0,0.5)",
-        strokeWidth,
+        stroke: backgroundColor.isDark()
+          ? backgroundColor.negate().darken(0.5).rgb().string()
+          : backgroundColor.darken(0.5).rgb().string(),
+        strokeWidth: strokeWidth + 0.5,
         config,
       },
       {
         to: [
           {
             d: "M47 75 L25 50 L25 50",
-            stroke: "black",
-            strokeWidth: strokeWidth + 0.5,
+            stroke: color.rgb().string(),
+            strokeWidth: strokeWidth + 1,
           },
-          { d: "M47 75 L47 75 L47 75", stroke: "black", strokeWidth },
+          {
+            d: "M47 75 L47 75 L47 75",
+            stroke: color.rgb().string(),
+            strokeWidth,
+          },
         ],
         config,
       },
       {
         d: "M47 75 L47 75 M47 25 L47 25",
-        stroke: "rgba(255, 255, 255, 0.9)",
-        strokeWidth: strokeWidth + 1,
+        stroke: backgroundColor.isLight()
+          ? backgroundColor.lighten(0.1).rgb().string()
+          : backgroundColor.darken(0.25).rgb().string(),
+        strokeWidth: strokeWidth + 2,
         config,
       },
     ],
     hover: [
       {
         d: "M47 75 L25 50 L47 25",
-        stroke: "rgba(0,0,0,0.5)",
-        strokeWidth: strokeWidth + 1,
+        stroke: backgroundColor.isDark()
+          ? backgroundColor.negate().darken(0.5).rgb().string()
+          : backgroundColor.darken(0.5).rgb().string(),
+        strokeWidth: strokeWidth + 2,
         config,
       },
       {
         to: [
           {
             d: "M47 75 L25 50 L25 50",
-            stroke: "black",
-            strokeWidth: strokeWidth + 0.5,
+            stroke: color.rgb().string(),
+            strokeWidth: strokeWidth + 1,
           },
           {
             d: "M47 75 L25 50 L47 25",
-            stroke: "black",
-            strokeWidth: strokeWidth + 1,
+            stroke: color.rgb().string(),
+            strokeWidth: strokeWidth + 2,
           },
         ],
         config,
       },
       {
         d: "M47 75 L47 75 M47 25 L47 25",
-        stroke: "rgba(255, 255, 255, 0.9)",
-        strokeWidth: strokeWidth + 1,
+        stroke: backgroundColor.isLight()
+          ? backgroundColor.lighten(0.1).rgb().string()
+          : backgroundColor.darken(0.25).rgb().string(),
+        strokeWidth: strokeWidth + 2,
         config,
       },
     ],
     active: [
       {
         d: "M47 75 L25 50 L47 25",
-        stroke: "rgba(0,0,0,0.5)",
-        strokeWidth,
+        stroke: backgroundColor.isDark()
+          ? backgroundColor.negate().darken(0.5).rgb().string()
+          : backgroundColor.darken(0.5).rgb().string(),
+        strokeWidth: strokeWidth + 0.5,
         config,
       },
       {
         d: "M47 75 L25 50 L47 25",
-        stroke: "black",
-        strokeWidth: strokeWidth + 1,
+        stroke: color.rgb().string(),
+        strokeWidth: strokeWidth + 2,
         config,
       },
       {
         to: {
           d: "M47 75 L25 50 M47 25 L25 50",
-          stroke: "rgba(255, 255, 255, 0.9)",
-          strokeWidth: strokeWidth + 1,
+          stroke: backgroundColor.isLight()
+            ? backgroundColor.lighten(0.1).rgb().string()
+            : backgroundColor.darken(0.25).rgb().string(),
+          strokeWidth: strokeWidth + 2,
         },
         config,
       },
@@ -131,9 +172,8 @@ function ExitButton({
       width={width || height || size || "50"}
       height={height || width || size || "50"}
       viewBox="0 0 100 100"
-      fill={fill || "none"}
+      fill="none"
       strokeWidth={strokeWidth || "2"}
-      stroke={color || "currentColor"}
       style={{
         ...{
           cursor: "pointer",

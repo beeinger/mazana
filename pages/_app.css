@@ -12,6 +12,11 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
+  /* font-family: "Josefin Sans", sans-serif; */
+  /* font-family: "Exo", sans-serif; */
+  font-family: "Monoton", cursive;
+  color: pink;
 }
 
 img {

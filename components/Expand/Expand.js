@@ -3,10 +3,10 @@ import ExpandButton from "components/ExpandButton";
 import { ParallaxLayer } from "react-spring/renderprops-addons";
 import styled from "styled-components";
 
-function _Expand({ onClick, className }) {
+function _Expand({ onClick, color, className }) {
   return (
     <ParallaxLayer className={className} offset={0.75} speed={0.5}>
-      <ExpandButton onClick={onClick} />
+      <ExpandButton onClick={onClick} color={color} />
     </ParallaxLayer>
   );
 }

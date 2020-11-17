@@ -11,8 +11,16 @@ function _Title({ title, className }) {
 }
 
 const Title = styled(_Title)`
-  font-size: 10vh;
   text-align: center;
+  color: ${({ color }) => color || "currentColor"};
+
+  font-size: 10vh;
+  @media screen and (max-width: 992px) {
+    font-size: 8vh;
+  }
+  @media screen and (max-width: 600px) {
+    font-size: 6vh;
+  }
 `;
 
 export default Title;

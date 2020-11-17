@@ -1,13 +1,10 @@
-import React from "react";
-import { Parallax } from "react-spring/renderprops-addons";
-import useHorizontalScroll from "context/useHorizontalScroll";
-import Section from "components/Section";
-import Default from "sections/Default";
+import React, { useState } from "react";
+import GenerateParallax from "components/GenerateParallax";
+import Head from "next/head";
 
 const sections = [
   {
-    section: Default,
-    title: "Home",
+    title: "Vitamin",
     photos: [
       "1.png",
       "2.jpg",
@@ -24,54 +21,42 @@ const sections = [
       "1.png",
       "2.jpg",
     ],
+    color: "black",
   },
   {
-    section: Default,
-    title: "Home",
-    backgroundColor: "#eec4c9",
+    title: "Paulinka",
     photos: ["1.png", "2.jpg"],
+    backgroundColor: "#eec4c9",
+    color: "pink",
   },
   {
-    section: Default,
-    title: "Home",
-    length: 3,
+    title: "Kaja",
     photos: ["1.png", "2.jpg"],
     backgroundColor: "grey",
+    color: "pink",
   },
   {
-    section: Default,
-    title: "Home",
-    length: 3,
+    title: "Ilza",
     photos: ["1.png", "2.jpg"],
     backgroundColor: "skyblue",
+    color: "pink",
+  },
+  {
+    title: "Babcia",
+    photos: ["1.png", "2.jpg"],
+    backgroundColor: "black",
+    color: "pink",
   },
 ];
 
 export default function index() {
-  const { focused, focus, clearFocus, setParallax } = useHorizontalScroll();
-
+  const [title, setTitle] = useState("Portfolio");
   return (
-    <Parallax
-      pages={sections.length * 1.1 - 0.05}
-      horizontal
-      ref={(ref) => setParallax(ref)}
-      scrolling={focused === false}
-    >
-      {sections.map((val, idx) => (
-        <Section
-          {...{
-            ...{
-              focused,
-              focus,
-              clearFocus,
-              key: "section_" + idx,
-              id: idx,
-              pagesCount: sections.length,
-            },
-            ...val,
-          }}
-        />
-      ))}
-    </Parallax>
+    <>
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <GenerateParallax sections={sections} setTitle={setTitle} />
+    </>
   );
 }

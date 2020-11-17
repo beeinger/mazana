@@ -1,19 +1,29 @@
 import Exit from "components/Exit";
 import React, { useState, useEffect } from "react";
 import { Parallax, ParallaxLayer } from "react-spring/renderprops-addons";
+import Default from "sections/Default";
+import { useVisible } from "react-hooks-visible";
+import Head from "next/head";
 
 export default function Section({
   focused,
   focus,
+  setVisible,
   photos,
   title,
   clearFocus,
   id,
   pagesCount,
+  color,
   backgroundColor,
-  section: _Section,
+  section: _Section = Default,
 }) {
   const [parallax, setParallax] = useState();
+  const [targetRef, visible] = useVisible();
+
+  useEffect(() => {
+    setVisible(visible, id);
+  }, [visible]);
 
   const galleryLength =
     photos.length > 6 ? Math.ceil(photos.length / 6 / 0.5) * 0.5 : 1;
@@ -28,7 +38,7 @@ export default function Section({
   const config = { mass: 4, tension: 20, friction: 15, velocity: 5 };
 
   const handleClearFocus = () => parallax.scrollTo(0);
-  const handleFocus = () => focus(id, isFirst ? 0 : offset + 0.05, parallax);
+  const handleFocus = () => focus(id, parallax);
   const setRef = (ref) => setParallax(ref);
 
   const onScroll = () => {
@@ -60,24 +70,32 @@ export default function Section({
           maxWidth: "100vw",
         }}
       >
-        <Parallax
-          id={"page_" + id}
-          pages={pageCount}
-          scrolling={isFocused}
-          ref={setRef}
-          config={config}
-        >
-          <_Section
-            {...{
-              focus: handleFocus,
-              photos,
-              galleryLength,
-              title,
-            }}
-          />
-        </Parallax>
+        <div ref={targetRef}>
+          <Parallax
+            id={"title_" + title}
+            pages={pageCount}
+            scrolling={isFocused}
+            ref={setRef}
+            config={config}
+          >
+            <_Section
+              {...{
+                focus: handleFocus,
+                photos,
+                galleryLength,
+                title,
+                color,
+                backgroundColor,
+              }}
+            />
+          </Parallax>
+        </div>
         {isFocused && (
-          <Exit onClick={handleClearFocus} backgroundColor={backgroundColor} />
+          <Exit
+            onClick={handleClearFocus}
+            color={color}
+            backgroundColor={backgroundColor}
+          />
         )}
       </ParallaxLayer>
     </>
